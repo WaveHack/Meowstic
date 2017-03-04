@@ -1,0 +1,33 @@
+{
+  "name": "wavehack/meowstic",
+  "description": "Laravel project helper scripts",
+  "type": "project",
+  "homepage": "https://github.com/WaveHack/Meowstic",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "WaveHack",
+      "email": "email@wavehack.net"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/WaveHack/Meowstic/issues"
+  },
+  "require": {
+    "symfony/console": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Meowstic\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Meowstic\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}
