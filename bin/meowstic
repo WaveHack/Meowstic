@@ -9,5 +9,5 @@ if (file_exists(__DIR__ . '/../../../autoload.php')) {
 
 use Meowstic\Application;
 
-$app = new Application();
-$app->run();
+return (new Application)
+    ->run();
