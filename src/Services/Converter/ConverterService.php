@@ -76,18 +76,21 @@ class ConverterService
 
         $this->output->writeln('<info>Converting project</info>');
 
-        $taskRunner = (new TaskRunner)
-            ->setPath($this->getPath())
-            ->add([
-                new MoveArtisanToBin,
-                new MoveAppToSrc,
-                new CreateAndMoveDirectoriesToApp,
-                new CreateApplicationClass,
-                new FixPaths,
-                new ComposerDumpAutoload,
-            ]);
+        // todo: do something with this
+        if (!$this->dryRun) {
+            $taskRunner = (new TaskRunner)
+                ->setPath($this->getPath())
+                ->add([
+                    new MoveArtisanToBin,
+                    new MoveAppToSrc,
+                    new CreateAndMoveDirectoriesToApp,
+                    new CreateApplicationClass,
+                    new FixPaths,
+                    new ComposerDumpAutoload,
+                ]);
 
-        $taskRunner->run();
+            $taskRunner->run();
+        }
 
         $this->output->writeln('<info>Done converting project</info>');
     }
