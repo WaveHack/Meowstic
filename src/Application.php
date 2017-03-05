@@ -3,7 +3,6 @@
 namespace Meowstic;
 
 use Meowstic\Commands\ConvertCommand;
-use Meowstic\Commands\InitCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 class Application extends SymfonyApplication
@@ -16,6 +15,5 @@ class Application extends SymfonyApplication
         parent::__construct(static::NAME, static::VERSION);
 
         $this->add(new ConvertCommand);
-        $this->add(new InitCommand);
     }
 }
