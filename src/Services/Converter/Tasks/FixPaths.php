@@ -151,8 +151,6 @@ class FixPaths extends Task
         $composerJsonFile = ($this->getPath() . DIRECTORY_SEPARATOR . 'composer.json');
         $composerData = json_decode(file_get_contents($composerJsonFile), true);
 
-        $composerData = str_replace('\/', '\\', $composerData);
-
         foreach ($composerData['autoload']['classmap'] as &$directory) {
             if ($directory === 'database') {
                 $directory = 'app/database';
@@ -167,6 +165,9 @@ class FixPaths extends Task
             }
         }
 
-        file_put_contents($composerJsonFile, json_encode($composerData, JSON_PRETTY_PRINT));
+        $composerData = json_encode($composerData, JSON_PRETTY_PRINT);
+        $composerData = str_replace('\/', '/', $composerData);
+
+        file_put_contents($composerJsonFile, $composerData);
     }
 }
