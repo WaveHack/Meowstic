@@ -7,7 +7,5 @@ if (file_exists(__DIR__ . '/../../../autoload.php')) {
     require (__DIR__ . '/../vendor/autoload.php');
 }
 
-use Meowstic\Application;
-
-return (new Application)
+return (new Meowstic\Application)
     ->run();
