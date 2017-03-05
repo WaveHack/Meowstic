@@ -27,7 +27,7 @@ The basic gist of it is that source code now resides in `src/`, Artisan in `bin/
 
 This command is only tested on a fresh Laravel project. It might produce unwanted results on a bigger existing codebase.
 
-Convert does the following things:
+More specifically:
 
 - Creates a `bin/` directory and moves `artisan` from the project root to there.
 - Moves source code from `app/` to `src/`.
@@ -52,13 +52,6 @@ Convert does the following things:
 *todo: more info*
 
 ### Init
-
-```
-$ cd path/to/project
-$ meowstic init
-```
-
-Initializes a Laravel repository
 
 *todo*
 
