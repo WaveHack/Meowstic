@@ -24,152 +24,114 @@ class FixPaths extends Task
 
     protected function fixAppBootstrapApp()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'bootstrap' . DIRECTORY_SEPARATOR . 'app.php');
+        return $this->fixFile('app/bootstrap/app.php', function ($data) {
+            $applicationFCQN = ($this->getNamespace() . '\\Application');
 
-        if (!file_exists($path)) {
-            return;
-        }
+            $data = str_replace('new Illuminate\\Foundation\\Application', ('new ' . $applicationFCQN), $data);
+            $data = preg_replace('/(__DIR__ ?\. ?[\'"])\/\.\.\/([\'"])/', '$1/../../$2', $data);
 
-        $applicationFCQN = ($this->getNamespace() . '\Application');
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/new Illuminate\\\Foundation\\\Application/', ('new ' . $applicationFCQN), $data);
-        $data = preg_replace('/(__DIR__ ?\. ?)\'\/\.\.\/\'/', '$1\'/../../\'', $data);
-
-        file_put_contents($path, $data);
+            return $data;
+        });
     }
 
     protected function fixAppBootstrapAutoload()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'bootstrap' . DIRECTORY_SEPARATOR . 'autoload.php');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/(__DIR__ ?\. ?)\'\/\.\.\/vendor\/autoload\.php\'/', '$1\'/../../vendor/autoload.php\'', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('app/bootstrap/autoload.php', function ($data) {
+            return preg_replace('/(__DIR__ ?\. ?[\'"])\/\.\.\/vendor\/autoload\.php/', '$1\/../../vendor/autoload.php', $data);
+        });
     }
 
     protected function fixBinArtisan()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . 'artisan');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/(__DIR__ ?\. ?)\'\/bootstrap\//', '$1\'/../app/bootstrap/', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('bin/artisan', function ($data) {
+            return preg_replace('/(__DIR__ ?\. ?[\'"])\/bootstrap\//', '$1\/../app/bootstrap/', $data);
+        });
     }
 
     protected function fixPublicIndex()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'index.php');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/(__DIR__ ?\. ?)\'\/\.\.\/bootstrap\//', '$1\'/../app/bootstrap/', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('public/index.php', function ($data) {
+            return str_replace('/../bootstrap/', '/../app/bootstrap/', $data);
+        });
     }
 
     protected function fixSrcConsoleKernel()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Console' . DIRECTORY_SEPARATOR . 'Kernel.php');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/\'routes\/console\.php\'/', '\'app/routes/console.php\'', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('src/Console/Kernel.php', function ($data) {
+            return str_replace('routes/console.php', 'app/routes/console.php', $data);
+        });
     }
 
     protected function fixSrcProvidersBroadcastServiceProvider()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Providers' . DIRECTORY_SEPARATOR . 'BroadcastServiceProvider.php');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/\'routes\/channels\.php\'/', '\'app/routes/channels.php\'', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('src/Providers/RouteServiceProvider.php', function ($data) {
+            return str_replace('routes/channels.php', 'app/routes/channels.php', $data);
+        });
     }
 
     protected function fixSrcProvidersRouteServiceProvider()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Providers' . DIRECTORY_SEPARATOR . 'RouteServiceProvider.php');
+        return $this->fixFile('src/Providers/RouteServiceProvider.php', function ($data) {
+            $data = str_replace('routes/api.php', 'app/routes/api.php', $data);
+            $data = str_replace('routes/web.php', 'app/routes/web.php', $data);
 
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/\'routes\/web\.php\'/', '\'app/routes/web.php\'', $data);
-        $data = preg_replace('/\'routes\/api\.php\'/', '\'app/routes/api.php\'', $data);
-
-        file_put_contents($path, $data);
+            return $data;
+        });
     }
 
     protected function fixGitIgnore()
     {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . '.gitignore');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = str_replace('/storage/*.key', '/app/storage/*.key', $data);
-
-        file_put_contents($path, $data);
+        return $this->fixFile('.gitignore', function ($data) {
+            return str_replace('/storage/*.key', '/app/storage/*.key', $data);
+        });
     }
 
     protected function fixComposerJson()
     {
-        $composerJsonFile = ($this->getPath() . DIRECTORY_SEPARATOR . 'composer.json');
-        $composerData = json_decode(file_get_contents($composerJsonFile), true);
+        return $this->fixFile('composer.json', function ($data) {
+            $json = json_decode($data, true);
 
-        foreach ($composerData['autoload']['classmap'] as &$directory) {
-            if ($directory === 'database') {
-                $directory = 'app/database';
-                break;
+            foreach ($json['autoload']['classmap'] as &$directory) {
+                if ($directory === 'database') {
+                    $directory = 'app/database';
+                    break;
+                }
             }
+
+            foreach ($json['autoload']['psr-4'] as $namespace => &$directory) {
+                if ($directory === 'app/') {
+                    $directory = 'src/';
+                    break;
+                }
+            }
+
+            $data = json_encode($json, JSON_PRETTY_PRINT);
+
+            $data = str_replace('\/', '/', $data);
+            $data = str_replace('php artisan', 'php bin/artisan', $data);
+
+            return $data;
+        });
+    }
+
+    /**
+     * @param string $path
+     * @param callable $function
+     * @return bool
+     */
+    protected function fixFile($path, callable $function)
+    {
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+        $path = ($this->getPath() . DIRECTORY_SEPARATOR . $path);
+
+        if (!file_exists($path)) {
+            return false;
         }
 
-        foreach ($composerData['autoload']['psr-4'] as $namespace => &$directory) {
-            if ($directory === 'app/') {
-                $directory = 'src/';
-                break;
-            }
-        }
+        $data = file_get_contents($path);
+        $data = $function($data);
+        file_put_contents($path, $data);
 
-        $composerData = json_encode($composerData, JSON_PRETTY_PRINT);
-
-        $composerData = str_replace('\/', '/', $composerData);
-        $composerData = str_replace('php artisan', 'php bin/artisan', $composerData);
-
-        file_put_contents($composerJsonFile, $composerData);
+        return true;
     }
 }
