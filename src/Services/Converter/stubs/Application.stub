@@ -36,9 +36,9 @@ class Application extends LaravelApplication
         return ($this->appPath . DIRECTORY_SEPARATOR . 'database');
     }
 
-    public function langPath()
+    public function resourcePath()
     {
-        return ($this->appPath . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'lang');
+        return ($this->appPath . DIRECTORY_SEPARATOR . 'resources');
     }
 
     public function storagePath()
