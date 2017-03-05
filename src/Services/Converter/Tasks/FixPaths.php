@@ -79,7 +79,7 @@ class FixPaths extends Task
 
         $data = file_get_contents($path);
 
-        $data = preg_replace('/(__DIR__ ?\. ?)\'\/bootstrap\//', '$1\'/../bootstrap/', $data);
+        $data = preg_replace('/(__DIR__ ?\. ?)\'\/bootstrap\//', '$1\'/../app/bootstrap/', $data);
 
         file_put_contents($path, $data);
     }
