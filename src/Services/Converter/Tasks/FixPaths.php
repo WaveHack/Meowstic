@@ -18,6 +18,7 @@ class FixPaths extends Task
         $this->fixSrcConsoleKernel();
         $this->fixSrcProvidersBroadcastServiceProvider();
         $this->fixSrcProvidersRouteServiceProvider();
+        $this->fixGitIgnore();
         $this->fixComposerJson();
     }
 
@@ -126,6 +127,21 @@ class FixPaths extends Task
 
         $data = preg_replace('/\'routes\/web\.php\'/', '\'app/routes/web.php\'', $data);
         $data = preg_replace('/\'routes\/api\.php\'/', '\'app/routes/api.php\'', $data);
+
+        file_put_contents($path, $data);
+    }
+
+    protected function fixGitIgnore()
+    {
+        $path = ($this->getPath() . DIRECTORY_SEPARATOR . '.gitignore');
+
+        if (!file_exists($path)) {
+            return;
+        }
+
+        $data = file_get_contents($path);
+
+        $data = str_replace('/storage/*.key', '/app/storage/*.key', $data);
 
         file_put_contents($path, $data);
     }
