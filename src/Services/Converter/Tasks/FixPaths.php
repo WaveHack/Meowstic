@@ -13,7 +13,6 @@ class FixPaths extends Task
     {
         $this->fixAppBootstrapApp();
         $this->fixAppBootstrapAutoload();
-        $this->fixAppConfigView();
         $this->fixBinArtisan();
         $this->fixPublicIndex();
         $this->fixSrcConsoleKernel();
@@ -51,21 +50,6 @@ class FixPaths extends Task
         $data = file_get_contents($path);
 
         $data = preg_replace('/(__DIR__ ?\. ?)\'\/\.\.\/vendor\/autoload\.php\'/', '$1\'/../../vendor/autoload.php\'', $data);
-
-        file_put_contents($path, $data);
-    }
-
-    protected function fixAppConfigView()
-    {
-        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'view.php');
-
-        if (!file_exists($path)) {
-            return;
-        }
-
-        $data = file_get_contents($path);
-
-        $data = preg_replace('/\'resources\/views\'/', '\'app/resources/views\'', $data);
 
         file_put_contents($path, $data);
     }
