@@ -29,5 +29,8 @@
   "config": {
     "preferred-install": "dist",
     "sort-packages": true
-  }
+  },
+  "bin": [
+    "bin/meowstic"
+  ]
 }
