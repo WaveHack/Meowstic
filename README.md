@@ -48,7 +48,7 @@ More specifically:
   - `src/Console/Kernel.php` for our new console routes path
   - `src/Providers/BroadcastServiceProvider.php` for our new channel routes path
   - `src/Providers/RouteServiceProvider.php` for our new api and web routes path
-  - `composer.json` for changing the psr-4 autoload path from app/ to src/
+  - `composer.json` for the psr-4 autoload path and artisan calls
 
 ## License
 
