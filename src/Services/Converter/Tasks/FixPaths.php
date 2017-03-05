@@ -15,6 +15,7 @@ class FixPaths extends Task
         $this->fixAppBootstrapAutoload();
         $this->fixAppConfigView();
         $this->fixBinArtisan();
+        $this->fixPublicIndex();
         $this->fixSrcConsoleKernel();
         $this->fixSrcProvidersBroadcastServiceProvider();
         $this->fixSrcProvidersRouteServiceProvider();
@@ -80,6 +81,21 @@ class FixPaths extends Task
         $data = file_get_contents($path);
 
         $data = preg_replace('/(__DIR__ ?\. ?)\'\/bootstrap\//', '$1\'/../app/bootstrap/', $data);
+
+        file_put_contents($path, $data);
+    }
+
+    protected function fixPublicIndex()
+    {
+        $path = ($this->getPath() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'index.php');
+
+        if (!file_exists($path)) {
+            return;
+        }
+
+        $data = file_get_contents($path);
+
+        $data = preg_replace('/(__DIR__ ?\. ?)\'\/\.\.\/bootstrap\//', '$1\'/../app/bootstrap/', $data);
 
         file_put_contents($path, $data);
     }

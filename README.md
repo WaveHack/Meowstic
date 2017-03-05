@@ -44,6 +44,7 @@ More specifically:
   - `app/bootstrap/autoload.php`
   - `app/config/view.php` for our new views path
   - `bin/artisan`
+  - `public/index.php`
   - `src/Console/Kernel.php` for our new console routes path
   - `src/Providers/BroadcastServiceProvider.php` for our new channel routes path
   - `src/Providers/RouteServiceProvider.php` for our new api and web routes path
