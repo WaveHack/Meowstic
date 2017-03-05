@@ -150,7 +150,9 @@ class FixPaths extends Task
         }
 
         $composerData = json_encode($composerData, JSON_PRETTY_PRINT);
+
         $composerData = str_replace('\/', '/', $composerData);
+        $composerData = str_replace('php artisan', 'php bin/artisan', $composerData);
 
         file_put_contents($composerJsonFile, $composerData);
     }
