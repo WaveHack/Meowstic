@@ -8,7 +8,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 class Application extends SymfonyApplication
 {
     const NAME = 'Meowstic';
-    const VERSION = '0.1.11';
+    const VERSION = '0.1.12';
 
     public function __construct()
     {
