@@ -15,16 +15,18 @@ class CpDotEnv extends Task
     {
         $env = $this->getTaskRunner()->getInput()->getArgument('env');
 
-        $envFilesToCheck = [
+        $files = [
             ".env.template.{$env}",
             '.env.example', // Laravel default
         ];
 
-        foreach ($envFilesToCheck as $envFile) {
-            if ($this->exists($envFile)) {
-                $this->exec("cp {$envFile} .env");
-                break;
+        foreach ($files as $file) {
+            if (!$this->exists($file)) {
+                continue;
             }
+
+            $this->exec("cp {$file} .env");
+            break;
         }
     }
 }

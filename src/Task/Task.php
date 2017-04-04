@@ -2,8 +2,6 @@
 
 namespace Meowstic\Task;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 abstract class Task
 {
     /**
@@ -38,9 +36,7 @@ abstract class Task
             return null;
         }
 
-        $cmd = "cd {$this->getPath()} && {$cmd}";
-
-        passthru($cmd, $returnVar);
+        passthru("cd {$this->getPath()} && {$cmd}", $returnVar);
         return $returnVar;
     }
 

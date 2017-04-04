@@ -4,6 +4,7 @@ namespace Meowstic\Services\Initializer;
 
 use Meowstic\Services\Initializer\Tasks\ComposerInstall;
 use Meowstic\Services\Initializer\Tasks\CpDotEnv;
+use Meowstic\Services\Initializer\Tasks\TouchLocalSqliteDatabase;
 use Meowstic\Services\Service;
 use Meowstic\Task\TaskRunner;
 use Meowstic\Traits\PathAwareTrait;
@@ -28,7 +29,7 @@ class InitializerService extends Service
 
                 // Laravel
                 new CpDotEnv,
-//                new TouchLocalSqliteDatabase,
+                new TouchLocalSqliteDatabase,
 //                new ArtisanKeyGenerate,
 //                new LaravelIdeHelpers,
 
