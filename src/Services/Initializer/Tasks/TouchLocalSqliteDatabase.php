@@ -20,18 +20,20 @@ class TouchLocalSqliteDatabase extends Task
                 continue;
             }
 
-            $data = require $file;
+            $data = file_get_contents($file);
 
-            if (!is_array($data)) {
-                continue;
-            }
+            if (preg_match('/^\s+\'database\' => (.*?)\'(\w+\.sqlite)\'.*?,$/m', $data, $matches)) {
 
-            foreach ($data['connections'] as $connection) {
-                if ($connection['driver'] !== 'sqlite') {
-                    continue;
+                $filename = $matches[2];
+
+                if (strpos($matches[1], 'storage_path') !== false) {
+
+                } elseif (strpos($matches[1], 'database_path') !== false) {
+
                 }
 
-                echo $connection['database'];
+
+                var_dump($matches);
             }
 
             break;
